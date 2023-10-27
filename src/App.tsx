@@ -7,7 +7,7 @@ function App() {
 
 		return localCards !== null ? JSON.parse(localCards) : [];
 	});
-	const newCardModalRef = useRef();
+	const newCardModalRef = useRef(null);
 
 	useEffect(() => {
 		window.localStorage.setItem('cards', JSON.stringify(cards));
@@ -46,20 +46,20 @@ function App() {
 	};
 
 	const openNewCardModal = () => {
-		newCardModalRef.current.showModal();
+		(newCardModalRef.current as unknown as HTMLDialogElement).showModal();
 	};
 
 	const cancelNewCardModal = () => {
-		newCardModalRef.current.close();
+		(newCardModalRef.current as unknown as HTMLDialogElement).close();
 	};
 
 	const createNewCard = () => {
-		newCardModalRef.current.close();
+		(newCardModalRef.current as unknown as HTMLDialogElement).close();
 
 		const newCards = [...cards];
 		const newCard = {
 			id: crypto.randomUUID(),
-			text: newCardModalRef.current.querySelector('input').value,
+			text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')?.value,
 			status: 'todo'
 		};
 		newCards.push(newCard);
@@ -71,7 +71,7 @@ function App() {
 			<div className="flex-1 rounded-xl bg-slate-500">
 				<h2 className="px-2 py-4 text-center text-2xl font-bold">Todo</h2>
 				<div className="flex flex-col gap-2 px-2">
-					{cards.map((card) => {
+					{cards.map((card: any) => {
 						if (card.status === 'todo') {
 							return (
 								<Card
@@ -89,7 +89,7 @@ function App() {
 			<div className="flex flex-1 flex-col rounded-xl bg-slate-500">
 				<h2 className="px-2 py-4 text-center text-2xl font-bold">In Progress</h2>
 				<div className="flex flex-1 flex-col gap-2 px-2">
-					{cards.map((card) => {
+					{cards.map((card: any) => {
 						if (card.status === 'inProgress') {
 							return (
 								<Card
@@ -107,7 +107,7 @@ function App() {
 			<div className="flex-1 rounded-xl bg-slate-500">
 				<h2 className="px-2 py-4 text-center text-2xl font-bold">Completed</h2>
 				<div className="flex flex-1 flex-col gap-2 px-2">
-					{cards.map((card) => {
+					{cards.map((card: any) => {
 						if (card.status === 'completed') {
 							return (
 								<Card
