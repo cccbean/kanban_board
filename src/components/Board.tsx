@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Card from './Card';
 import Column from './Column';
 
 const Board = () => {
