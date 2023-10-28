@@ -13,7 +13,21 @@ const Board = () => {
 	useEffect(() => {
 		window.localStorage.setItem('cards', JSON.stringify(cards));
 	}, [cards]);
-`git `
+
+  useEffect(() => {
+    const detectCtrlEnter = (ev:KeyboardEvent) => {
+      if (ev.ctrlKey && ev.key === 'Enter') {
+		    (newCardModalRef.current as unknown as HTMLDialogElement).showModal();
+      }
+    }
+
+    window.addEventListener('keydown', detectCtrlEnter);
+
+    return () => {
+      window.removeEventListener('keydown', detectCtrlEnter);
+    }
+  }, [])
+
 	const progressStatus = (id: number) => {
 		const newCards = [...cards];
 		newCards.forEach((card) => {
@@ -54,7 +68,7 @@ const Board = () => {
 		(newCardModalRef.current as unknown as HTMLDialogElement).close();
 	};
 
-	const createNewCard = () => {
+	const createNewCardClickHandler = () => {
 		(newCardModalRef.current as unknown as HTMLDialogElement).close();
 
 		const newCards = [...cards];
@@ -71,6 +85,26 @@ const Board = () => {
 			input.value = '';
 		}
 	};
+
+	const createNewCardKeyHandler: React.KeyboardEventHandler<HTMLInputElement> = (ev) => {
+    const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input');
+    if (ev.key === 'Enter' && (input !== null && input.value !== '') ) {
+      (newCardModalRef.current as unknown as HTMLDialogElement).close();
+
+      const newCards = [...cards];
+      const newCard = {
+        id: crypto.randomUUID(),
+        text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')?.value,
+        status: 'todo'
+      };
+      newCards.push(newCard);
+      setCards(newCards);
+  
+      if (input !== null) {
+        input.value = '';
+      }
+    }
+  };
 
 	return (
 		<div className="flex flex-1 gap-4 bg-slate-800 p-4">
@@ -117,11 +151,16 @@ const Board = () => {
 					<h2>New Card</h2>
 					<label htmlFor="cardTextInput">
 						<p>Card Text:</p>
-						<input id="cardTextInput" name="cardTextInput" type="text" />
+						<input
+							id="cardTextInput"
+							name="cardTextInput"
+							type="text"
+							onKeyUp={createNewCardKeyHandler}
+						/>
 					</label>
 					<div className="grid grid-cols-2">
 						<button onClick={cancelNewCardModal}>Cancel</button>
-						<button onClick={createNewCard}>Submit</button>
+						<button onClick={createNewCardClickHandler}>Submit</button>
 					</div>
 				</div>
 			</dialog>
