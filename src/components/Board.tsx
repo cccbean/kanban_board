@@ -65,7 +65,10 @@ const Board = () => {
 		newCards.push(newCard);
 		setCards(newCards);
 
-		(newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input').value = '';
+    const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input'); 
+    if (input !== null) {
+      input.value = '';
+    }
 	};
 
 	return (
