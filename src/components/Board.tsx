@@ -13,7 +13,7 @@ const Board = () => {
 	useEffect(() => {
 		window.localStorage.setItem('cards', JSON.stringify(cards));
 	}, [cards]);
-``
+`git `
 	const progressStatus = (id: number) => {
 		const newCards = [...cards];
 		newCards.forEach((card) => {
