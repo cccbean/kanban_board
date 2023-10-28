@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Card from './Card';
+import Column from './Column';
 
 const Board = () => {
 	const [cards, setCards] = useState(() => {
@@ -12,7 +13,7 @@ const Board = () => {
 	useEffect(() => {
 		window.localStorage.setItem('cards', JSON.stringify(cards));
 	}, [cards]);
-
+``
 	const progressStatus = (id: number) => {
 		const newCards = [...cards];
 		newCards.forEach((card) => {
@@ -65,67 +66,37 @@ const Board = () => {
 		newCards.push(newCard);
 		setCards(newCards);
 
-    const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input'); 
-    if (input !== null) {
-      input.value = '';
-    }
+		const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input');
+		if (input !== null) {
+			input.value = '';
+		}
 	};
 
 	return (
-		<div className="flex h-screen gap-4 bg-slate-800 p-4">
-			<div className="flex-1 rounded-xl bg-slate-500">
-				<h2 className="px-2 py-4 text-center text-2xl font-bold">Todo</h2>
-				<div className="flex flex-col gap-2 px-2">
-					{cards.map((card: any) => {
-						if (card.status === 'todo') {
-							return (
-								<Card
-									key={card.id}
-									card={card}
-									progressStatus={progressStatus}
-									regressStatus={regressStatus}
-								/>
-							);
-						}
-					})}
-				</div>
-			</div>
+		<div className="flex flex-1 gap-4 bg-slate-800 p-4">
+			<Column
+				title="Todo"
+				status="todo"
+				cards={cards}
+				progressStatus={progressStatus}
+				regressStatus={regressStatus}
+			/>
 
-			<div className="flex flex-1 flex-col rounded-xl bg-slate-500">
-				<h2 className="px-2 py-4 text-center text-2xl font-bold">In Progress</h2>
-				<div className="flex flex-1 flex-col gap-2 px-2">
-					{cards.map((card: any) => {
-						if (card.status === 'inProgress') {
-							return (
-								<Card
-									key={card.id}
-									card={card}
-									progressStatus={progressStatus}
-									regressStatus={regressStatus}
-								/>
-							);
-						}
-					})}
-				</div>
-			</div>
+			<Column
+				title="In Progress"
+				status="inProgress"
+				cards={cards}
+				progressStatus={progressStatus}
+				regressStatus={regressStatus}
+			/>
 
-			<div className="flex-1 rounded-xl bg-slate-500">
-				<h2 className="px-2 py-4 text-center text-2xl font-bold">Completed</h2>
-				<div className="flex flex-1 flex-col gap-2 px-2">
-					{cards.map((card: any) => {
-						if (card.status === 'completed') {
-							return (
-								<Card
-									key={card.id}
-									card={card}
-									progressStatus={progressStatus}
-									regressStatus={regressStatus}
-								/>
-							);
-						}
-					})}
-				</div>
-			</div>
+			<Column
+				title="Completed"
+				status="completed"
+				cards={cards}
+				progressStatus={progressStatus}
+				regressStatus={regressStatus}
+			/>
 
 			<button className="fixed bottom-4 rounded-full bg-slate-50 px-4 py-2" onClick={clear}>
 				Clear
