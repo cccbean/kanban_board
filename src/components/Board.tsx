@@ -106,7 +106,7 @@ const Board = () => {
   };
 
 	return (
-		<div className="flex flex-1 gap-4 bg-slate-800 p-4">
+		<div className="flex flex-1 gap-4 bg-slate-200 p-4">
 			<Column
 				title="Todo"
 				status="todo"

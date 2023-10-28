@@ -10,7 +10,7 @@ interface ColumnProps {
 
 const Column = ({ title, status, cards, progressStatus, regressStatus }: ColumnProps) => {
 	return (
-		<div className="flex-1 rounded-xl bg-slate-500">
+		<div className="flex-1 rounded-xl bg-slate-50">
 			<h2 className="px-2 py-4 text-center text-2xl font-bold">{title}</h2>
 			<div className="flex flex-col gap-2 px-2">
 				{cards.map((card: { id: number; text: string; status: string }) => {
