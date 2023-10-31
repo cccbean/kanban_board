@@ -13,19 +13,19 @@ const Board = () => {
 		window.localStorage.setItem('cards', JSON.stringify(cards));
 	}, [cards]);
 
-  useEffect(() => {
-    const detectCtrlEnter = (ev:KeyboardEvent) => {
-      if (ev.ctrlKey && ev.key === 'Enter') {
-		    (newCardModalRef.current as unknown as HTMLDialogElement).showModal();
-      }
-    }
+	useEffect(() => {
+		const detectCtrlEnter = (ev: KeyboardEvent) => {
+			if (ev.ctrlKey && ev.key === 'Enter') {
+				(newCardModalRef.current as unknown as HTMLDialogElement).showModal();
+			}
+		};
 
-    window.addEventListener('keydown', detectCtrlEnter);
+		window.addEventListener('keydown', detectCtrlEnter);
 
-    return () => {
-      window.removeEventListener('keydown', detectCtrlEnter);
-    }
-  }, [])
+		return () => {
+			window.removeEventListener('keydown', detectCtrlEnter);
+		};
+	}, []);
 
 	const progressStatus = (id: number) => {
 		const newCards = [...cards];
@@ -55,10 +55,21 @@ const Board = () => {
 		setCards(newCards);
 	};
 
-  const deleteCard = (id:number) => {
-    const newCards = [...cards];
-    setCards(newCards.filter((card) => card.id !== id))
-  }
+	const deleteCard = (id: number) => {
+		const newCards = [...cards];
+		setCards(newCards.filter((card) => card.id !== id));
+	};
+
+	const completeCard = (id: number) => {
+		const newCards = [...cards];
+		newCards.forEach((card) => {
+			if (card.id === id) {
+				card.complete = true;
+			}
+		});
+    console.log(newCards);
+		setCards(newCards);
+	};
 
 	const clear = () => {
 		setCards([]);
@@ -79,7 +90,8 @@ const Board = () => {
 		const newCard = {
 			id: crypto.randomUUID(),
 			text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')?.value,
-			status: 'todo'
+			status: 'todo',
+			complete: false
 		};
 		newCards.push(newCard);
 		setCards(newCards);
@@ -91,24 +103,26 @@ const Board = () => {
 	};
 
 	const createNewCardKeyHandler: React.KeyboardEventHandler<HTMLInputElement> = (ev) => {
-    const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input');
-    if (ev.key === 'Enter' && (input !== null && input.value !== '') ) {
-      (newCardModalRef.current as unknown as HTMLDialogElement).close();
+		const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input');
+		if (ev.key === 'Enter' && input !== null && input.value !== '') {
+			(newCardModalRef.current as unknown as HTMLDialogElement).close();
 
-      const newCards = [...cards];
-      const newCard = {
-        id: crypto.randomUUID(),
-        text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')?.value,
-        status: 'todo'
-      };
-      newCards.push(newCard);
-      setCards(newCards);
-  
-      if (input !== null) {
-        input.value = '';
-      }
-    }
-  };
+			const newCards = [...cards];
+			const newCard = {
+				id: crypto.randomUUID(),
+				text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')
+					?.value,
+				status: 'todo',
+				complete: false
+			};
+			newCards.push(newCard);
+			setCards(newCards);
+
+			if (input !== null) {
+				input.value = '';
+			}
+		}
+	};
 
 	return (
 		<div className="flex flex-1 gap-4 bg-slate-200 p-4">
@@ -118,7 +132,7 @@ const Board = () => {
 				cards={cards}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
-        deleteCard={deleteCard}
+				deleteCard={deleteCard}
 			/>
 
 			<Column
@@ -135,6 +149,7 @@ const Board = () => {
 				cards={cards}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
+				completeCard={completeCard}
 			/>
 
 			<button className="fixed bottom-4 rounded-full bg-slate-50 px-4 py-2" onClick={clear}>
