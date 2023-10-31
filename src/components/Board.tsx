@@ -2,16 +2,27 @@ import { useEffect, useRef, useState } from 'react';
 import Column from './Column';
 
 const Board = () => {
-	const [cards, setCards] = useState(() => {
-		const localCards = window.localStorage.getItem('cards');
+  const [todos, setTodos] = useState(() => {
+    const localTodos = window.localStorage.getItem('todos');
+    return localTodos !== null ? JSON.parse(localTodos) : [];
+  });
+  const [inProgress, setInProgress] = useState(() => {
+    const localInProgress = window.localStorage.getItem('inProgress');
+    return localInProgress !== null ? JSON.parse(localInProgress) : [];
+  });
+  const [completed, setCompleted] = useState(() => {
+    const localCompleted = window.localStorage.getItem('completed');
+    return localCompleted !== null ? JSON.parse(localCompleted) : [];
+  });
 
-		return localCards !== null ? JSON.parse(localCards) : [];
-	});
 	const newCardModalRef = useRef(null);
 
-	useEffect(() => {
-		window.localStorage.setItem('cards', JSON.stringify(cards));
-	}, [cards]);
+  useEffect(() => {
+		window.localStorage.setItem('todos', JSON.stringify(todos));
+		window.localStorage.setItem('inProgress', JSON.stringify(inProgress));
+		window.localStorage.setItem('completed', JSON.stringify(completed));
+    console.log(todos, inProgress, completed);
+  }, [todos, inProgress, completed])
 
 	useEffect(() => {
 		const detectCtrlEnter = (ev: KeyboardEvent) => {
@@ -28,51 +39,80 @@ const Board = () => {
 	}, []);
 
 	const progressStatus = (id: number) => {
-		const newCards = [...cards];
-		newCards.forEach((card) => {
-			if (card.id === id) {
-				if (card.status === 'todo') {
-					card.status = 'inProgress';
-				} else if (card.status === 'inProgress') {
-					card.status = 'completed';
-				}
-			}
-		});
-		setCards(newCards);
+    let item;
+    let inTodos = false;
+    todos.forEach((todo: { id: number; text: string; completed: boolean }) => {
+      if (todo.id === id) {
+        inTodos = true;
+        item = todo;
+      }
+    })
+    inProgress.forEach((todo: { id: number; text: string; completed: boolean }) => {
+      if (todo.id === id) {
+        item = todo;
+      }
+    })
+
+    if (inTodos) {
+      setTodos(todos.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id));
+      const newInProgress = [...inProgress];
+      newInProgress.push(item);
+      setInProgress(newInProgress);
+    } else {
+      setInProgress(inProgress.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id));
+      const newCompleted = [...completed];
+      newCompleted.push(item);
+      setCompleted(newCompleted);
+    }
 	};
 
 	const regressStatus = (id: number) => {
-		const newCards = [...cards];
-		newCards.forEach((card) => {
-			if (card.id === id) {
-				if (card.status === 'inProgress') {
-					card.status = 'todo';
-				} else if (card.status === 'completed') {
-					card.status = 'inProgress';
-				}
-			}
-		});
-		setCards(newCards);
+    let item;
+    let inInProgress = false;
+    inProgress.forEach((todo: { id: number; text: string; completed: boolean }) => {
+      if (todo.id === id) {
+        inInProgress = true;
+        item = todo;
+      }
+    })
+    completed.forEach((todo: { id: number; text: string; completed: boolean }) => {
+      if (todo.id === id) {
+        item = todo;
+      }
+    })
+
+    if (inInProgress) {
+      setInProgress(inProgress.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id));
+      const newTodos = [...todos];
+      newTodos.push(item);
+      setTodos(newTodos);
+    } else {
+      setCompleted(completed.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id));
+      const newInProgress = [...inProgress];
+      newInProgress.push(item);
+      setInProgress(newInProgress);
+    }
 	};
 
 	const deleteCard = (id: number) => {
-		const newCards = [...cards];
-		setCards(newCards.filter((card) => card.id !== id));
+		const newTodos = [...todos];
+		setTodos(newTodos.filter((todo) => todo.id !== id));
 	};
 
 	const completeCard = (id: number) => {
-		const newCards = [...cards];
-		newCards.forEach((card) => {
-			if (card.id === id) {
-				card.complete = true;
+		const newCompleted = [...completed];
+		newCompleted.forEach((todo) => {
+			if (todo.id === id) {
+				todo.completed = true;
 			}
 		});
-    console.log(newCards);
-		setCards(newCards);
+		setCompleted(newCompleted);
 	};
 
 	const clear = () => {
-		setCards([]);
+		setTodos([]);
+    setInProgress([]);
+    setCompleted([]);
 	};
 
 	const openNewCardModal = () => {
@@ -86,15 +126,14 @@ const Board = () => {
 	const createNewCardClickHandler = () => {
 		(newCardModalRef.current as unknown as HTMLDialogElement).close();
 
-		const newCards = [...cards];
-		const newCard = {
+		const newTodos = [...todos];
+		const newTodo = {
 			id: crypto.randomUUID(),
 			text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')?.value,
-			status: 'todo',
-			complete: false
+			completed: false
 		};
-		newCards.push(newCard);
-		setCards(newCards);
+		newTodos.push(newTodo);
+		setTodos(newTodos);
 
 		const input = (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input');
 		if (input !== null) {
@@ -107,16 +146,15 @@ const Board = () => {
 		if (ev.key === 'Enter' && input !== null && input.value !== '') {
 			(newCardModalRef.current as unknown as HTMLDialogElement).close();
 
-			const newCards = [...cards];
-			const newCard = {
+			const newTodos = [...todos];
+			const newTodo = {
 				id: crypto.randomUUID(),
 				text: (newCardModalRef.current as unknown as HTMLDialogElement).querySelector('input')
 					?.value,
-				status: 'todo',
 				complete: false
 			};
-			newCards.push(newCard);
-			setCards(newCards);
+			newTodos.push(newTodo);
+			setTodos(newTodos);
 
 			if (input !== null) {
 				input.value = '';
@@ -128,8 +166,7 @@ const Board = () => {
 		<div className="flex flex-1 gap-4 bg-slate-200 p-4">
 			<Column
 				title="Todo"
-				status="todo"
-				cards={cards}
+				array={todos}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
 				deleteCard={deleteCard}
@@ -138,8 +175,7 @@ const Board = () => {
 
 			<Column
 				title="In Progress"
-				status="inProgress"
-				cards={cards}
+				array={inProgress}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
 				deleteCard={deleteCard}
@@ -148,8 +184,7 @@ const Board = () => {
 
 			<Column
 				title="Completed"
-				status="completed"
-				cards={cards}
+				array={completed}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
 				deleteCard={deleteCard}
