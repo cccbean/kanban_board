@@ -39,7 +39,7 @@ const App = () => {
 	return (
 		<div className="flex h-screen flex-col">
 			{/* <button className="bg-orange-100 dark:bg-red-100" onClick={themeSwitcher}>Theme Switcher</button> */}
-			<Header theme={theme} themeSwitcher={themeSwitcher} />
+			<Header theme={theme ? theme : ''} themeSwitcher={themeSwitcher} />
 			<Board />
 		</div>
 	);
