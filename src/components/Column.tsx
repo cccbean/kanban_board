@@ -6,8 +6,8 @@ interface ColumnProps {
 	cards: any;
 	progressStatus: (id: number) => void;
 	regressStatus: (id: number) => void;
-  deleteCard?: (id: number) => void;
-  completeCard?: (id: number) => void;
+  deleteCard: (id: number) => void;
+  completeCard: (id: number) => void;
 }
 
 const Column = ({

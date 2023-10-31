@@ -133,6 +133,7 @@ const Board = () => {
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
 				deleteCard={deleteCard}
+				completeCard={completeCard}
 			/>
 
 			<Column
@@ -141,6 +142,8 @@ const Board = () => {
 				cards={cards}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
+				deleteCard={deleteCard}
+				completeCard={completeCard}
 			/>
 
 			<Column
@@ -149,6 +152,7 @@ const Board = () => {
 				cards={cards}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
+				deleteCard={deleteCard}
 				completeCard={completeCard}
 			/>
 
