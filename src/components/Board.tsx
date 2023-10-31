@@ -55,6 +55,11 @@ const Board = () => {
 		setCards(newCards);
 	};
 
+  const deleteCard = (id:number) => {
+    const newCards = [...cards];
+    setCards(newCards.filter((card) => card.id !== id))
+  }
+
 	const clear = () => {
 		setCards([]);
 	};
@@ -113,6 +118,7 @@ const Board = () => {
 				cards={cards}
 				progressStatus={progressStatus}
 				regressStatus={regressStatus}
+        deleteCard={deleteCard}
 			/>
 
 			<Column
