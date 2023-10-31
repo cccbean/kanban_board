@@ -28,6 +28,12 @@ const App = () => {
 		}
 	}, [theme]);
 
+	// This fixed the FOUC for dark mode
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		setLoading(false);
+	}, []);
+
 	const themeSwitcher = () => {
 		if (theme === 'dark') {
 			setTheme('light');
@@ -35,6 +41,11 @@ const App = () => {
 			setTheme('dark');
 		}
 	};
+
+	// This fixed the FOUC for dark mode
+	if (loading) {
+		return <div>Loading</div>;
+	}
 
 	return (
 		<div className="flex h-screen flex-col">
