@@ -3,11 +3,41 @@ import Column from './Column';
 import Footer from './Footer';
 import { Todo } from '../App';
 
+export interface KanbanColorTheme {
+	bg: string;
+	colBg: string;
+	colTitle: string;
+	oddCardBg: string;
+	oddCardText: string;
+	evenCardBg: string;
+	evenCardText: string;
+}
+
 interface KanbanProps {
 	title: string;
 }
 
 const Kanban = ({ title }: KanbanProps) => {
+	const [colors, setColors] = useState<KanbanColorTheme>(() => {
+		const localColors = localStorage.getItem(`${title} Colors`);
+		return localColors !== null
+			? JSON.parse(localColors)
+			: {
+					bg: '#E2E3E4',
+					colBg: '#FFFFFF',
+					colTitle: '#FFFFFF',
+					oddCardBg: '#AEB1B2',
+					oddCardText: '#FFFFFF',
+					evenCardBg: '#797F81',
+					evenCardText: '#FFFFFF'
+			  };
+	});
+
+	useEffect(() => {
+		localStorage.setItem(`${title} Colors`, JSON.stringify(colors));
+		console.log(colors);
+	}, [colors]);
+
 	const [todos, setTodos] = useState(() => {
 		const localTodos = localStorage.getItem(`${title} Todos`);
 		return localTodos !== null ? JSON.parse(localTodos) : [];
@@ -46,31 +76,25 @@ const Kanban = ({ title }: KanbanProps) => {
 	const progressStatus = (id: string) => {
 		let item;
 		let inTodos = false;
-		todos.forEach((todo:Todo) => {
+		todos.forEach((todo: Todo) => {
 			if (todo.id === id) {
 				inTodos = true;
 				item = todo;
 			}
 		});
-		inProgress.forEach((todo:Todo) => {
+		inProgress.forEach((todo: Todo) => {
 			if (todo.id === id) {
 				item = todo;
 			}
 		});
 
 		if (inTodos) {
-			setTodos(
-				todos.filter((todo:Todo) => todo.id !== id)
-			);
+			setTodos(todos.filter((todo: Todo) => todo.id !== id));
 			const newInProgress = [...inProgress];
 			newInProgress.push(item);
 			setInProgress(newInProgress);
 		} else {
-			setInProgress(
-				inProgress.filter(
-					(todo:Todo) => todo.id !== id
-				)
-			);
+			setInProgress(inProgress.filter((todo: Todo) => todo.id !== id));
 			const newCompleted = [...completed];
 			newCompleted.push(item);
 			setCompleted(newCompleted);
@@ -80,31 +104,25 @@ const Kanban = ({ title }: KanbanProps) => {
 	const regressStatus = (id: string) => {
 		let item;
 		let inInProgress = false;
-		inProgress.forEach((todo:Todo) => {
+		inProgress.forEach((todo: Todo) => {
 			if (todo.id === id) {
 				inInProgress = true;
 				item = todo;
 			}
 		});
-		completed.forEach((todo:Todo) => {
+		completed.forEach((todo: Todo) => {
 			if (todo.id === id) {
 				item = todo;
 			}
 		});
 
 		if (inInProgress) {
-			setInProgress(
-				inProgress.filter(
-					(todo:Todo) => todo.id !== id
-				)
-			);
+			setInProgress(inProgress.filter((todo: Todo) => todo.id !== id));
 			const newTodos = [...todos];
 			newTodos.push(item);
 			setTodos(newTodos);
 		} else {
-			setCompleted(
-				completed.filter((todo:Todo) => todo.id !== id)
-			);
+			setCompleted(completed.filter((todo: Todo) => todo.id !== id));
 			const newInProgress = [...inProgress];
 			newInProgress.push(item);
 			setInProgress(newInProgress);
@@ -180,57 +198,64 @@ const Kanban = ({ title }: KanbanProps) => {
 	};
 
 	return (
-		<div className='flex flex-col flex-1'>
-      <div className="flex flex-1 gap-4 bg-slate-200 p-4">
-        <Column
-          title="Todo"
-          array={todos}
-          progressStatus={progressStatus}
-          regressStatus={regressStatus}
-          deleteCard={deleteCard}
-          completeCard={completeCard}
-        />
-        <Column
-          title="In Progress"
-          array={inProgress}
-          progressStatus={progressStatus}
-          regressStatus={regressStatus}
-          deleteCard={deleteCard}
-          completeCard={completeCard}
-        />
-        <Column
-          title="Completed"
-          array={completed}
-          progressStatus={progressStatus}
-          regressStatus={regressStatus}
-          deleteCard={deleteCard}
-          completeCard={completeCard}
-        />
-        <dialog
-          className="rounded-xl bg-slate-500 backdrop:bg-slate-800 backdrop:opacity-70"
-          ref={newCardModalRef}
-        >
-          <div className="flex flex-col gap-4  p-8">
-            <h2>New Card</h2>
-            <label htmlFor="cardTextInput">
-              <p>Card Text:</p>
-              <input
-                id="cardTextInput"
-                name="cardTextInput"
-                type="text"
-                onKeyUp={createNewCardKeyHandler}
-              />
-            </label>
-            <div className="grid grid-cols-2">
-              <button onClick={cancelNewCardModal}>Cancel</button>
-              <button onClick={createNewCardClickHandler}>Submit</button>
-            </div>
-          </div>
-        </dialog>
-      </div>
-        <Footer clear={clear} openNewCardModal={openNewCardModal} />
-    </div>
-
+		<div className="flex flex-1 flex-col">
+			<div className="flex flex-1 gap-4 p-4" style={{ backgroundColor: `${colors.bg}` }}>
+				<Column
+					title="Todo"
+					colors={colors}
+					array={todos}
+					progressStatus={progressStatus}
+					regressStatus={regressStatus}
+					deleteCard={deleteCard}
+					completeCard={completeCard}
+				/>
+				<Column
+					title="In Progress"
+					colors={colors}
+					array={inProgress}
+					progressStatus={progressStatus}
+					regressStatus={regressStatus}
+					deleteCard={deleteCard}
+					completeCard={completeCard}
+				/>
+				<Column
+					title="Completed"
+					colors={colors}
+					array={completed}
+					progressStatus={progressStatus}
+					regressStatus={regressStatus}
+					deleteCard={deleteCard}
+					completeCard={completeCard}
+				/>
+				<dialog
+					className="rounded-xl bg-slate-500 backdrop:bg-slate-800 backdrop:opacity-70"
+					ref={newCardModalRef}
+				>
+					<div className="flex flex-col gap-4  p-8">
+						<h2>New Card</h2>
+						<label htmlFor="cardTextInput">
+							<p>Card Text:</p>
+							<input
+								id="cardTextInput"
+								name="cardTextInput"
+								type="text"
+								onKeyUp={createNewCardKeyHandler}
+							/>
+						</label>
+						<div className="grid grid-cols-2">
+							<button onClick={cancelNewCardModal}>Cancel</button>
+							<button onClick={createNewCardClickHandler}>Submit</button>
+						</div>
+					</div>
+				</dialog>
+			</div>
+			<Footer
+				clear={clear}
+				openNewCardModal={openNewCardModal}
+				colors={colors}
+				setColors={setColors}
+			/>
+		</div>
 	);
 };
 
