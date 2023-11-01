@@ -12,6 +12,6 @@ export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
 
   return <div>
     <Header title={projectName ? projectName?.replace(/-/g, ' ') : ''} projects={projects} setProjects={setProjects} />
-    <Kanban title={projectName?.replace(/-/g, ' ')} projects={projects} />
+    <Kanban key={projectName} title={projectName?.replace(/-/g, ' ')} projects={projects} />
   </div>
 }

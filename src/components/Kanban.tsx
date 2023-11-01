@@ -26,7 +26,7 @@ const Kanban = ({ title }:KanbanProps) => {
 		localStorage.setItem(`${title} Todos`, JSON.stringify(todos));
 		localStorage.setItem(`${title} InProgress`, JSON.stringify(inProgress));
 		localStorage.setItem(`${title} Completed`, JSON.stringify(completed));
-		// console.log(todos, inProgress, completed);
+		console.log(todos, inProgress, completed);
 	}, [todos, inProgress, completed]);
 
 	useEffect(() => {

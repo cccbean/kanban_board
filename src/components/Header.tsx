@@ -14,43 +14,29 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 	const menuModalRef = useRef(null);
 	const newProjectModalRef = useRef(null);
 
-	const menuModalClickHandler: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
-		if ((ev.target as HTMLButtonElement).dataset.state === 'closed') {
-			(menuModalRef.current as unknown as HTMLDialogElement).show();
-			(ev.target as HTMLButtonElement).dataset.state = 'open';
-		} else {
-			(menuModalRef.current as unknown as HTMLDialogElement).close();
-			(ev.target as HTMLButtonElement).dataset.state = 'closed';
-		}
-	};
-
-	const openNewProjectModal = () => {
-		(newProjectModalRef.current as unknown as HTMLDialogElement).showModal();
-	}
-	
-	const closeNewProjectModal = () => {
-		(newProjectModalRef.current as unknown as HTMLDialogElement).close();
-	}
-	
-	const addProject = (title:string) => {
+	const addProject = (title: string) => {
 		const newProjects = [...projects];
 		newProjects.push(title);
 		setProjects(newProjects);
-	}
+	};
 
 	const addNewProjectClickHandler = () => {
-		const modal = (newProjectModalRef.current as unknown as HTMLDialogElement);
+		const modal = newProjectModalRef.current as unknown as HTMLDialogElement;
 		const title = modal.querySelector('input')?.value;
 		if (title) {
 			addProject(title);
 		}
 		modal.close();
-	}
+	};
 
 	return (
 		<header className="relative flex justify-between bg-slate-50 shadow-md shadow-slate-300">
-			<h1 className="p-4 text-xl">YAK</h1>
+			<Link to="/">
+				<h1 className="p-4 text-xl">YAK</h1>
+			</Link>
+
 			{title !== '' && <h2 className="flex items-center text-center text-xl font-bold">{title}</h2>}
+
 			<div className="flex">
 				<button className="w-6" onClick={themeSwitcher}>
 					{theme === 'light' ? (
@@ -87,36 +73,43 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 				</button>
 				<button
 					className="group flex w-14 flex-col justify-center gap-1 px-5"
-					onClick={menuModalClickHandler}
-					data-state="closed"
+					onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).showModal()}
 				>
 					<div className="h-[2px] w-full bg-black transition-all group-data-[state=closed]:translate-y-0 group-data-[state=open]:translate-y-[4px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-45"></div>
 					<div className="h-[2px] w-full bg-black group-data-[state=closed]:block group-data-[state=open]:hidden"></div>
 					<div className="roup-data-[state=closed]:translate-y-0 h-[2px] w-full bg-black transition-all group-data-[state=open]:translate-y-[-2px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-[-45deg]"></div>
 				</button>
 			</div>
+
 			<dialog
 				className="z-10 h-[calc(100vh-60px)] w-2/5 translate-x-[75%] translate-y-[6.6%] bg-white"
 				ref={menuModalRef}
 			>
+				<button onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).close()}>
+					Close
+				</button>
 				<nav>
 					<ul>
 						{projects.map((project) => {
-							return <li key={project}><Link to={`/${project.replace(/\s/g, '-')}`}>{project}</Link></li>;
+							return (
+								<li key={project}>
+									<Link to={`/${project.replace(/\s/g, '-')}`}>{project}</Link>
+								</li>
+							);
 						})}
 					</ul>
 				</nav>
-				<button onClick={openNewProjectModal}>Add New Project</button>
+				<button onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).showModal()}>Add New Project</button>
 			</dialog>
 
 			<dialog ref={newProjectModalRef}>
 				<h2>Create New Project</h2>
 				<label htmlFor="newProjectInput">
-					Project Title: 
+					Project Title:
 					<input type="text" id="newProjectInput" name="newProjectInput" />
 				</label>
-				<div className='grid grid-cols-2'>
-					<button onClick={closeNewProjectModal}>Cancel</button>
+				<div className="grid grid-cols-2">
+					<button onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).close()}>Cancel</button>
 					<button onClick={addNewProjectClickHandler}>Submit</button>
 				</div>
 			</dialog>
