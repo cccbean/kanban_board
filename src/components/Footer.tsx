@@ -12,12 +12,12 @@ const Footer = ({ clear, openNewCardModal, colors, setColors }: FooterProps) => 
 	const colorModalRef = useRef<HTMLDialogElement>(null);
 
 	return (
-		<footer className="flex w-full items-center justify-between p-4">
-			<button className="rounded-full bg-slate-50 px-4 py-2" onClick={clear}>
+		<footer className="flex w-full items-center justify-between p-4 shadow-[0_-1px_2px_0_rgb(0,0,0,0.05)] shadow-white dark:bg-zinc-800 dark:text-zinc-300 dark:shadow-zinc-800">
+			<button className="rounded-full px-4 py-2" onClick={clear}>
 				Clear
 			</button>
 			<button onClick={() => colorModalRef.current?.showModal()}>Color</button>
-			<button className="rounded-full bg-slate-50 px-4 py-2" onClick={openNewCardModal}>
+			<button className="rounded-full px-4 py-2" onClick={openNewCardModal}>
 				New
 			</button>
 
