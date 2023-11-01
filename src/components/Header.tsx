@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { Project } from '../App';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {

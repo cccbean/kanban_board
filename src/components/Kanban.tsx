@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Column from './Column';
 import Footer from './Footer';
+import { Todo } from '../App';
 
 interface KanbanProps {
 	title: string;
@@ -42,16 +43,16 @@ const Kanban = ({ title }: KanbanProps) => {
 		};
 	}, []);
 
-	const progressStatus = (id: number) => {
+	const progressStatus = (id: string) => {
 		let item;
 		let inTodos = false;
-		todos.forEach((todo: { id: number; text: string; completed: boolean }) => {
+		todos.forEach((todo:Todo) => {
 			if (todo.id === id) {
 				inTodos = true;
 				item = todo;
 			}
 		});
-		inProgress.forEach((todo: { id: number; text: string; completed: boolean }) => {
+		inProgress.forEach((todo:Todo) => {
 			if (todo.id === id) {
 				item = todo;
 			}
@@ -59,7 +60,7 @@ const Kanban = ({ title }: KanbanProps) => {
 
 		if (inTodos) {
 			setTodos(
-				todos.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id)
+				todos.filter((todo:Todo) => todo.id !== id)
 			);
 			const newInProgress = [...inProgress];
 			newInProgress.push(item);
@@ -67,7 +68,7 @@ const Kanban = ({ title }: KanbanProps) => {
 		} else {
 			setInProgress(
 				inProgress.filter(
-					(todo: { id: number; text: string; completed: boolean }) => todo.id !== id
+					(todo:Todo) => todo.id !== id
 				)
 			);
 			const newCompleted = [...completed];
@@ -76,16 +77,16 @@ const Kanban = ({ title }: KanbanProps) => {
 		}
 	};
 
-	const regressStatus = (id: number) => {
+	const regressStatus = (id: string) => {
 		let item;
 		let inInProgress = false;
-		inProgress.forEach((todo: { id: number; text: string; completed: boolean }) => {
+		inProgress.forEach((todo:Todo) => {
 			if (todo.id === id) {
 				inInProgress = true;
 				item = todo;
 			}
 		});
-		completed.forEach((todo: { id: number; text: string; completed: boolean }) => {
+		completed.forEach((todo:Todo) => {
 			if (todo.id === id) {
 				item = todo;
 			}
@@ -94,7 +95,7 @@ const Kanban = ({ title }: KanbanProps) => {
 		if (inInProgress) {
 			setInProgress(
 				inProgress.filter(
-					(todo: { id: number; text: string; completed: boolean }) => todo.id !== id
+					(todo:Todo) => todo.id !== id
 				)
 			);
 			const newTodos = [...todos];
@@ -102,7 +103,7 @@ const Kanban = ({ title }: KanbanProps) => {
 			setTodos(newTodos);
 		} else {
 			setCompleted(
-				completed.filter((todo: { id: number; text: string; completed: boolean }) => todo.id !== id)
+				completed.filter((todo:Todo) => todo.id !== id)
 			);
 			const newInProgress = [...inProgress];
 			newInProgress.push(item);
@@ -110,12 +111,12 @@ const Kanban = ({ title }: KanbanProps) => {
 		}
 	};
 
-	const deleteCard = (id: number) => {
+	const deleteCard = (id: string) => {
 		const newTodos = [...todos];
 		setTodos(newTodos.filter((todo) => todo.id !== id));
 	};
 
-	const completeCard = (id: number) => {
+	const completeCard = (id: string) => {
 		const newCompleted = [...completed];
 		newCompleted.forEach((todo) => {
 			if (todo.id === id) {

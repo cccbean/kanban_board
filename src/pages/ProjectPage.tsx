@@ -5,9 +5,11 @@ import Kanban from "../components/Kanban";
 interface ProjectPageProps {
   projects: string[];
   setProjects: React.Dispatch<React.SetStateAction<string[]>>;
+  theme: string;
+	themeSwitcher: () => void;
 }
 
-export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
+export const ProjectPage = ({ projects, setProjects, theme, themeSwitcher }:ProjectPageProps) => {
   let { projectName } = useParams();
 
   if (projectName) {
@@ -17,7 +19,7 @@ export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
   }
 
   return <div className="h-screen flex flex-col">
-    <Header title={projectName} projects={projects} setProjects={setProjects} />
-    <Kanban key={projectName} title={projectName} projects={projects} />
+    <Header title={projectName} projects={projects} setProjects={setProjects} theme={theme} themeSwitcher={themeSwitcher} />
+    <Kanban key={projectName} title={projectName} />
   </div>
 }

@@ -64,20 +64,24 @@ const App = () => {
 		return <div></div>;
 	}
 
+	if (!theme) {
+		return <div>No theme lol</div>
+	}
+
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route
 					path="/"
 					element={
-						<Home projects={projects} setProjects={setProjects} />
+						<Home projects={projects} setProjects={setProjects} theme={theme} themeSwitcher={themeSwitcher} />
 						// <div className="flex h-screen max-h-screen flex-col">
 						// 	<Header theme={theme ? theme : ''} themeSwitcher={themeSwitcher} />
 						// 	<Board />
 						// </div>
 					}
 				/>
-				<Route path="/:projectName" element={<ProjectPage projects={projects} setProjects={setProjects} />} />
+				<Route path="/:projectName" element={<ProjectPage projects={projects} setProjects={setProjects} theme={theme} themeSwitcher={themeSwitcher} />} />
 				<Route path="*" element={<div>404 NOT FOUND</div>} />
 			</Routes>
 		</BrowserRouter>

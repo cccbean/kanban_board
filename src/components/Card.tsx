@@ -3,10 +3,10 @@ import { Todo } from "../App";
 interface CardProps {
 	card: Todo;
 	title: 'Todo' | 'In Progress' | 'Completed';
-	progressStatus: (id: number) => void;
-	regressStatus: (id: number) => void;
-	deleteCard: (id: number) => void;
-	completeCard: (id: number) => void;
+	progressStatus: (id: string) => void;
+	regressStatus: (id: string) => void;
+	deleteCard: (id: string) => void;
+	completeCard: (id: string) => void;
 }
 
 const Card = ({ card, title, progressStatus, regressStatus, deleteCard, completeCard }: CardProps) => {

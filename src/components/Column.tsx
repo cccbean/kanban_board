@@ -1,13 +1,13 @@
-import { Project, Todo } from '../App';
+import { Todo } from '../App';
 import Card from './Card';
 
 interface ColumnProps {
 	title: 'Todo' | 'In Progress' | 'Completed';
 	array: Todo[];
-	progressStatus: (id: number) => void;
-	regressStatus: (id: number) => void;
-	deleteCard: (id: number) => void;
-	completeCard: (id: number) => void;
+	progressStatus: (id: string) => void;
+	regressStatus: (id: string) => void;
+	deleteCard: (id: string) => void;
+	completeCard: (id: string) => void;
 }
 
 const Column = ({
