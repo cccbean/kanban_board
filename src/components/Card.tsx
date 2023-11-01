@@ -1,5 +1,4 @@
 import { Todo } from '../App';
-import { KanbanColorTheme } from './Kanban';
 
 interface CardProps {
 	card: Todo;
