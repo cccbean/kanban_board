@@ -6,7 +6,7 @@ interface KanbanProps {
 	title: string;
 }
 
-const Kanban = ({ title }:KanbanProps) => {
+const Kanban = ({ title }: KanbanProps) => {
 	const [todos, setTodos] = useState(() => {
 		const localTodos = localStorage.getItem(`${title} Todos`);
 		return localTodos !== null ? JSON.parse(localTodos) : [];
@@ -179,70 +179,57 @@ const Kanban = ({ title }:KanbanProps) => {
 	};
 
 	return (
-		<>
-			<div className="flex flex-1 gap-4 bg-slate-200 p-4">
-				<Column
-					title="Todo"
-					array={todos}
-					progressStatus={progressStatus}
-					regressStatus={regressStatus}
-					deleteCard={deleteCard}
-					completeCard={completeCard}
-				/>
+		<div className='flex flex-col flex-1'>
+      <div className="flex flex-1 gap-4 bg-slate-200 p-4">
+        <Column
+          title="Todo"
+          array={todos}
+          progressStatus={progressStatus}
+          regressStatus={regressStatus}
+          deleteCard={deleteCard}
+          completeCard={completeCard}
+        />
+        <Column
+          title="In Progress"
+          array={inProgress}
+          progressStatus={progressStatus}
+          regressStatus={regressStatus}
+          deleteCard={deleteCard}
+          completeCard={completeCard}
+        />
+        <Column
+          title="Completed"
+          array={completed}
+          progressStatus={progressStatus}
+          regressStatus={regressStatus}
+          deleteCard={deleteCard}
+          completeCard={completeCard}
+        />
+        <dialog
+          className="rounded-xl bg-slate-500 backdrop:bg-slate-800 backdrop:opacity-70"
+          ref={newCardModalRef}
+        >
+          <div className="flex flex-col gap-4  p-8">
+            <h2>New Card</h2>
+            <label htmlFor="cardTextInput">
+              <p>Card Text:</p>
+              <input
+                id="cardTextInput"
+                name="cardTextInput"
+                type="text"
+                onKeyUp={createNewCardKeyHandler}
+              />
+            </label>
+            <div className="grid grid-cols-2">
+              <button onClick={cancelNewCardModal}>Cancel</button>
+              <button onClick={createNewCardClickHandler}>Submit</button>
+            </div>
+          </div>
+        </dialog>
+      </div>
+        <Footer clear={clear} openNewCardModal={openNewCardModal} />
+    </div>
 
-				<Column
-					title="In Progress"
-					array={inProgress}
-					progressStatus={progressStatus}
-					regressStatus={regressStatus}
-					deleteCard={deleteCard}
-					completeCard={completeCard}
-				/>
-
-				<Column
-					title="Completed"
-					array={completed}
-					progressStatus={progressStatus}
-					regressStatus={regressStatus}
-					deleteCard={deleteCard}
-					completeCard={completeCard}
-				/>
-
-				<button className="fixed bottom-4 rounded-full bg-slate-50 px-4 py-2" onClick={clear}>
-					Clear
-				</button>
-
-				<button
-					className="fixed bottom-4 right-4 rounded-full bg-slate-50 px-4 py-2"
-					onClick={openNewCardModal}
-				>
-					New
-				</button>
-
-				<dialog
-					className="rounded-xl bg-slate-500 backdrop:bg-slate-800 backdrop:opacity-70"
-					ref={newCardModalRef}
-				>
-					<div className="flex flex-col gap-4  p-8">
-						<h2>New Card</h2>
-						<label htmlFor="cardTextInput">
-							<p>Card Text:</p>
-							<input
-								id="cardTextInput"
-								name="cardTextInput"
-								type="text"
-								onKeyUp={createNewCardKeyHandler}
-							/>
-						</label>
-						<div className="grid grid-cols-2">
-							<button onClick={cancelNewCardModal}>Cancel</button>
-							<button onClick={createNewCardClickHandler}>Submit</button>
-						</div>
-					</div>
-				</dialog>
-			</div>
-			<Footer />
-		</>
 	);
 };
 

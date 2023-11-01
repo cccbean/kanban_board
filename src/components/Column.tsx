@@ -19,8 +19,8 @@ const Column = ({
 	completeCard
 }: ColumnProps) => {
 	return (
-		<div className="flex-1 rounded-xl bg-slate-50">
-			<h2 className="px-2 py-4 text-center text-2xl font-bold">{title}</h2>
+		<div className="flex-1 rounded-xl bg-slate-50 max-h-[calc(100vh-164px)] overflow-auto">
+			<h2 className="z-10 sticky top-0 px-2 py-4 text-center text-2xl font-bold bg-white">{title}</h2>
 			<div className="flex flex-col gap-2 px-2 pb-2">
 				{array.map((card) => {
 					return (

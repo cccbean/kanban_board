@@ -8,10 +8,16 @@ interface ProjectPageProps {
 }
 
 export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
-  const { projectName } = useParams();
+  let { projectName } = useParams();
 
-  return <div>
-    <Header title={projectName ? projectName?.replace(/-/g, ' ') : ''} projects={projects} setProjects={setProjects} />
-    <Kanban key={projectName} title={projectName?.replace(/-/g, ' ')} projects={projects} />
+  if (projectName) {
+    projectName = projectName.replace(/-/g, ' ');
+  } else {
+    projectName = '';
+  }
+
+  return <div className="h-screen flex flex-col">
+    <Header title={projectName} projects={projects} setProjects={setProjects} />
+    <Kanban key={projectName} title={projectName} projects={projects} />
   </div>
 }

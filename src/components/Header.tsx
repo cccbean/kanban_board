@@ -181,6 +181,7 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 									<Link
 										className="flex-1 border-b border-black px-4 text-lg"
 										to={`/${project.replace(/\s/g, '-')}`}
+										onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).close()}
 									>
 										{project}
 									</Link>
