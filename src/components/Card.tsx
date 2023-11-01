@@ -1,9 +1,7 @@
+import { Todo } from "../App";
+
 interface CardProps {
-	card: {
-		id: number;
-		text: string;
-		completed: boolean;
-	};
+	card: Todo;
 	title: 'Todo' | 'In Progress' | 'Completed';
 	progressStatus: (id: number) => void;
 	regressStatus: (id: number) => void;

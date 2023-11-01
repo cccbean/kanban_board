@@ -2,26 +2,30 @@ import { useEffect, useRef, useState } from 'react';
 import Column from './Column';
 import Footer from './Footer';
 
-const Board = () => {
+interface KanbanProps {
+	title: string;
+}
+
+const Kanban = ({ title }:KanbanProps) => {
 	const [todos, setTodos] = useState(() => {
-		const localTodos = window.localStorage.getItem('todos');
+		const localTodos = localStorage.getItem(`${title} Todos`);
 		return localTodos !== null ? JSON.parse(localTodos) : [];
 	});
 	const [inProgress, setInProgress] = useState(() => {
-		const localInProgress = window.localStorage.getItem('inProgress');
+		const localInProgress = localStorage.getItem(`${title} InProgress`);
 		return localInProgress !== null ? JSON.parse(localInProgress) : [];
 	});
 	const [completed, setCompleted] = useState(() => {
-		const localCompleted = window.localStorage.getItem('completed');
+		const localCompleted = localStorage.getItem(`${title} Completed`);
 		return localCompleted !== null ? JSON.parse(localCompleted) : [];
 	});
 
 	const newCardModalRef = useRef(null);
 
 	useEffect(() => {
-		window.localStorage.setItem('todos', JSON.stringify(todos));
-		window.localStorage.setItem('inProgress', JSON.stringify(inProgress));
-		window.localStorage.setItem('completed', JSON.stringify(completed));
+		localStorage.setItem(`${title} Todos`, JSON.stringify(todos));
+		localStorage.setItem(`${title} InProgress`, JSON.stringify(inProgress));
+		localStorage.setItem(`${title} Completed`, JSON.stringify(completed));
 		// console.log(todos, inProgress, completed);
 	}, [todos, inProgress, completed]);
 
@@ -243,4 +247,4 @@ const Board = () => {
 	);
 };
 
-export default Board;
+export default Kanban;

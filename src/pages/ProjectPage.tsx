@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom"
 import Header from "../components/Header";
-import { Project } from "../App";
+import Kanban from "../components/Kanban";
 
 interface ProjectPageProps {
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  projects: string[];
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
   const { projectName } = useParams();
 
   return <div>
-    <Header title={projectName ? projectName : ''} projects={projects} setProjects={setProjects} />
-    This project is called {projectName}
+    <Header title={projectName ? projectName?.replace(/-/g, ' ') : ''} projects={projects} setProjects={setProjects} />
+    <Kanban title={projectName?.replace(/-/g, ' ')} projects={projects} />
   </div>
 }

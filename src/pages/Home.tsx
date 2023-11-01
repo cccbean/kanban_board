@@ -2,8 +2,8 @@ import { Project } from "../App"
 import Header from "../components/Header"
 
 interface HomeProps {
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  projects: string[];
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const Home = ({ projects, setProjects }:HomeProps) => {

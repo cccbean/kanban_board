@@ -3,33 +3,21 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { ProjectPage } from './pages/ProjectPage';
 
-export interface Project {
-	title: string;
-	todos: {
-		id: string;
-		text: string;
-		completed: boolean;
-	}[];
-	inProgress: {
-		id: string;
-		text: string;
-		completed: boolean;
-	}[];
-	completed: {
-		id: string;
-		text: string;
-		completed: boolean;
-	}[];
+export interface Todo {
+	id: string;
+	text: string;
+	completed: boolean;
 }
 
 const App = () => {
-	const [projects, setProjects] = useState<Project[]>(() => {
+	const [projects, setProjects] = useState<string[]>(() => {
 		const localProjects = window.localStorage.getItem('projects');
 		return localProjects !== null ? JSON.parse(localProjects) : [];
 	})
 
 	useEffect(() => {
 		window.localStorage.setItem('projects', JSON.stringify(projects));
+		console.log(projects);
 	}, [projects])
 
 	const [theme, setTheme] = useState(() => {

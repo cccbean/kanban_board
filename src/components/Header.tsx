@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 interface HeaderProps {
 	title: string;
-	projects: Project[];
-	setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+	projects: string[];
+	setProjects: React.Dispatch<React.SetStateAction<string[]>>;
 	theme: string;
 	themeSwitcher: () => void;
 }
@@ -34,13 +34,7 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 	
 	const addProject = (title:string) => {
 		const newProjects = [...projects];
-		const newProject:Project = {
-			title,
-			todos: [],
-			inProgress: [],
-			completed: []
-		}
-		newProjects.push(newProject);
+		newProjects.push(title);
 		setProjects(newProjects);
 	}
 
@@ -108,7 +102,7 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 				<nav>
 					<ul>
 						{projects.map((project) => {
-							return <li><Link to={`/${project.title}`}>{project.title}</Link></li>;
+							return <li key={project}><Link to={`/${project.replace(/\s/g, '-')}`}>{project}</Link></li>;
 						})}
 					</ul>
 				</nav>
