@@ -20,7 +20,7 @@ const Column = ({
 	return (
 		<div className="flex-1 rounded-xl bg-slate-50">
 			<h2 className="px-2 py-4 text-center text-2xl font-bold">{title}</h2>
-			<div className="flex flex-col gap-2 px-2">
+			<div className="flex flex-col gap-2 px-2 pb-2">
 				{array.map((card: { id: number; text: string; completed: boolean }) => {
 					return (
 						<Card

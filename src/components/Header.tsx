@@ -1,12 +1,18 @@
 import { useRef } from 'react';
+import { Project } from '../App';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
+	title: string;
+	projects: Project[];
+	setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 	theme: string;
 	themeSwitcher: () => void;
 }
 
-const Header = ({ theme, themeSwitcher }: HeaderProps) => {
+const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderProps) => {
 	const menuModalRef = useRef(null);
+	const newProjectModalRef = useRef(null);
 
 	const menuModalClickHandler: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
 		if ((ev.target as HTMLButtonElement).dataset.state === 'closed') {
@@ -18,9 +24,39 @@ const Header = ({ theme, themeSwitcher }: HeaderProps) => {
 		}
 	};
 
+	const openNewProjectModal = () => {
+		(newProjectModalRef.current as unknown as HTMLDialogElement).showModal();
+	}
+	
+	const closeNewProjectModal = () => {
+		(newProjectModalRef.current as unknown as HTMLDialogElement).close();
+	}
+	
+	const addProject = (title:string) => {
+		const newProjects = [...projects];
+		const newProject:Project = {
+			title,
+			todos: [],
+			inProgress: [],
+			completed: []
+		}
+		newProjects.push(newProject);
+		setProjects(newProjects);
+	}
+
+	const addNewProjectClickHandler = () => {
+		const modal = (newProjectModalRef.current as unknown as HTMLDialogElement);
+		const title = modal.querySelector('input')?.value;
+		if (title) {
+			addProject(title);
+		}
+		modal.close();
+	}
+
 	return (
 		<header className="relative flex justify-between bg-slate-50 shadow-md shadow-slate-300">
 			<h1 className="p-4 text-xl">YAK</h1>
+			<h2 className="flex items-center text-center text-xl font-bold">{title}</h2>
 			<div className="flex">
 				<button className="w-6" onClick={themeSwitcher}>
 					{theme === 'light' ? (
@@ -61,7 +97,7 @@ const Header = ({ theme, themeSwitcher }: HeaderProps) => {
 					data-state="closed"
 				>
 					<div className="h-[2px] w-full bg-black transition-all group-data-[state=closed]:translate-y-0 group-data-[state=open]:translate-y-[4px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-45"></div>
-					<div className="h-[2px] w-full bg-black group-data-[state=open]:hidden group-data-[state=closed]:block"></div>
+					<div className="h-[2px] w-full bg-black group-data-[state=closed]:block group-data-[state=open]:hidden"></div>
 					<div className="roup-data-[state=closed]:translate-y-0 h-[2px] w-full bg-black transition-all group-data-[state=open]:translate-y-[-2px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-[-45deg]"></div>
 				</button>
 			</div>
@@ -69,7 +105,26 @@ const Header = ({ theme, themeSwitcher }: HeaderProps) => {
 				className="z-10 h-[calc(100vh-60px)] w-2/5 translate-x-[75%] translate-y-[6.6%] bg-white"
 				ref={menuModalRef}
 			>
-				<button>Test</button>
+				<nav>
+					<ul>
+						{projects.map((project) => {
+							return <li><Link to={`/${project.title}`}>{project.title}</Link></li>;
+						})}
+					</ul>
+				</nav>
+				<button onClick={openNewProjectModal}>Add New Project</button>
+			</dialog>
+
+			<dialog ref={newProjectModalRef}>
+				<h2>Create New Project</h2>
+				<label htmlFor="newProjectInput">
+					Project Title: 
+					<input type="text" id="newProjectInput" name="newProjectInput" />
+				</label>
+				<div className='grid grid-cols-2'>
+					<button onClick={closeNewProjectModal}>Cancel</button>
+					<button onClick={addNewProjectClickHandler}>Submit</button>
+				</div>
 			</dialog>
 		</header>
 	);
