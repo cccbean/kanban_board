@@ -11,7 +11,7 @@ export const ProjectPage = ({ projects, setProjects }:ProjectPageProps) => {
   const { projectName } = useParams();
 
   return <div>
-    <Header title={projectName} projects={projects} setProjects={setProjects} />
+    <Header title={projectName ? projectName : ''} projects={projects} setProjects={setProjects} />
     This project is called {projectName}
   </div>
 }
