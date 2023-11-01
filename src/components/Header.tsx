@@ -56,7 +56,7 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 	return (
 		<header className="relative flex justify-between bg-slate-50 shadow-md shadow-slate-300">
 			<h1 className="p-4 text-xl">YAK</h1>
-			<h2 className="flex items-center text-center text-xl font-bold">{title}</h2>
+			{title !== '' && <h2 className="flex items-center text-center text-xl font-bold">{title}</h2>}
 			<div className="flex">
 				<button className="w-6" onClick={themeSwitcher}>
 					{theme === 'light' ? (

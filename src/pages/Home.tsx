@@ -9,7 +9,7 @@ interface HomeProps {
 export const Home = ({ projects, setProjects }:HomeProps) => {
   return (
     <div className="">
-      <Header projects={projects} setProjects={setProjects} />
+      <Header title='' projects={projects} setProjects={setProjects} />
       Hellooo, looks like you don't have any projects (this will auto reroute to the first project page?). Would you like to create one?
     </div>
   )
