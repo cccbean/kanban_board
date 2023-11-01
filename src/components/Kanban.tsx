@@ -20,14 +20,13 @@ const Kanban = ({ title }:KanbanProps) => {
 		return localCompleted !== null ? JSON.parse(localCompleted) : [];
 	});
 
-	const newCardModalRef = useRef(null);
-
 	useEffect(() => {
 		localStorage.setItem(`${title} Todos`, JSON.stringify(todos));
 		localStorage.setItem(`${title} InProgress`, JSON.stringify(inProgress));
 		localStorage.setItem(`${title} Completed`, JSON.stringify(completed));
-		console.log(todos, inProgress, completed);
 	}, [todos, inProgress, completed]);
+
+	const newCardModalRef = useRef(null);
 
 	useEffect(() => {
 		const detectCtrlEnter = (ev: KeyboardEvent) => {

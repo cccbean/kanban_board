@@ -31,14 +31,67 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 
 	return (
 		<header className="relative flex justify-between bg-slate-50 shadow-md shadow-slate-300">
-			<Link to="/">
+			<Link className="flex items-center px-4" to="/">
+				<svg
+					className="h-8 w-8"
+					fill="#000000"
+					height="200px"
+					width="200px"
+					version="1.1"
+					id="Layer_1"
+					xmlns="http://www.w3.org/2000/svg"
+					xmlnsXlink="http://www.w3.org/1999/xlink"
+					viewBox="0 0 512 512"
+					xmlSpace="preserve"
+				>
+					<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+					<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+					<g id="SVGRepo_iconCarrier">
+						{' '}
+						<g>
+							{' '}
+							<g>
+								{' '}
+								<path d="M211.054,349.845c-8.773,0-15.886,7.113-15.886,15.886v38.019c0,8.773,7.113,15.886,15.886,15.886 s15.886-7.113,15.886-15.886v-38.019C226.941,356.958,219.828,349.845,211.054,349.845z"></path>{' '}
+							</g>{' '}
+						</g>{' '}
+						<g>
+							{' '}
+							<g>
+								{' '}
+								<path d="M300.945,349.845c-8.773,0-15.886,7.113-15.886,15.886v38.019c0,8.773,7.113,15.886,15.886,15.886 c8.773,0,15.886-7.113,15.886-15.886v-38.019C316.832,356.958,309.719,349.845,300.945,349.845z"></path>{' '}
+							</g>{' '}
+						</g>{' '}
+						<g>
+							{' '}
+							<g>
+								{' '}
+								<path d="M512,153.677c0-8.773-7.113-15.886-15.886-15.886H394.07c-7.068-12.725-15.95-24.544-26.527-35.122 c-0.377-0.377-0.764-0.737-1.143-1.11V44.186c0-8.773-7.113-15.886-15.886-15.886s-15.886,7.113-15.886,15.886v33.17 c-49.075-28.287-109.4-27.364-157.256-0.116V44.186c0-8.773-7.113-15.886-15.886-15.886s-15.886,7.113-15.886,15.886v57.058 c-11.042,10.853-20.323,23.267-27.637,36.549H15.886C7.113,137.792,0,144.905,0,153.678c0,50.445,50.811,85.642,98.249,67.288 v78.902c-24.231,15.814-38.92,42.592-38.92,72.051v25.642c0,47.497,38.641,86.139,86.14,86.139h221.063 c47.498,0,86.14-38.641,86.14-86.139v-25.642c0-29.462-14.694-56.242-38.92-72.052v-78.901 C461.232,239.336,512,204.06,512,153.677z M256.221,88.228c-10.365,57.372-63.049,98.196-121.841,93.074 C149.187,126.34,199.212,88.162,256.221,88.228z M130.021,214.213c0-0.472,0.011-0.944,0.016-1.416 c76.41,7.501,145.145-45.73,157.736-120.637c53.146,13.727,94.206,62.646,94.206,122.053v72.938 c-18.231-3.294-244.246-1.398-251.958,0V214.213z M35.027,169.563h69.636c-1.099,3.735-2.125,7.782-2.943,11.621 C81.902,202.533,46.556,196.414,35.027,169.563z M420.898,371.919v25.642h0.001c0,29.978-24.388,54.367-54.368,54.367H145.468 c-29.979,0-54.368-24.388-54.368-54.367v-25.642c0-30.536,24.73-54.367,54.368-54.367h221.063 C396.111,317.553,420.898,341.329,420.898,371.919z M410.3,181.205c-0.831-3.925-1.81-7.809-2.936-11.642h69.609 C465.434,196.438,430.102,202.507,410.3,181.205z"></path>{' '}
+							</g>{' '}
+						</g>{' '}
+						<g>
+							{' '}
+							<g>
+								{' '}
+								<circle cx="179.916" cy="240.569" r="21.015"></circle>{' '}
+							</g>{' '}
+						</g>{' '}
+						<g>
+							{' '}
+							<g>
+								{' '}
+								<circle cx="332.729" cy="240.569" r="21.015"></circle>{' '}
+							</g>{' '}
+						</g>{' '}
+					</g>
+				</svg>
 				<h1 className="p-4 text-xl">YAK</h1>
 			</Link>
 
 			{title !== '' && <h2 className="flex items-center text-center text-xl font-bold">{title}</h2>}
 
 			<div className="flex">
-				<button className="w-6" onClick={themeSwitcher}>
+				<button className="w-14 px-4" onClick={themeSwitcher}>
 					{theme === 'light' ? (
 						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -72,34 +125,76 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 					)}
 				</button>
 				<button
-					className="group flex w-14 flex-col justify-center gap-1 px-5"
+					className="w-14 px-4"
 					onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).showModal()}
 				>
-					<div className="h-[2px] w-full bg-black transition-all group-data-[state=closed]:translate-y-0 group-data-[state=open]:translate-y-[4px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-45"></div>
-					<div className="h-[2px] w-full bg-black group-data-[state=closed]:block group-data-[state=open]:hidden"></div>
-					<div className="roup-data-[state=closed]:translate-y-0 h-[2px] w-full bg-black transition-all group-data-[state=open]:translate-y-[-2px] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-[-45deg]"></div>
+					<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+						<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+						<g id="SVGRepo_iconCarrier">
+							{' '}
+							<path
+								d="M4 6H20M4 12H20M4 18H20"
+								stroke="#000000"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							></path>{' '}
+						</g>
+					</svg>
 				</button>
 			</div>
 
-			<dialog
-				className="z-10 h-[calc(100vh-60px)] w-2/5 translate-x-[75%] translate-y-[6.6%] bg-white"
-				ref={menuModalRef}
-			>
-				<button onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).close()}>
-					Close
-				</button>
+			<dialog className="h-screen max-h-none w-1/3 translate-x-[100%]" ref={menuModalRef}>
+				<div className="flex justify-end">
+					<button
+						className="w-14 p-3"
+						onClick={() => (menuModalRef.current as unknown as HTMLDialogElement).close()}
+					>
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+							<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+							<g id="SVGRepo_iconCarrier">
+								{' '}
+								<rect width="24" height="24" fill="white"></rect>{' '}
+								<path
+									d="M7 17L16.8995 7.10051"
+									stroke="#000000"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								></path>{' '}
+								<path
+									d="M7 7.00001L16.8995 16.8995"
+									stroke="#000000"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								></path>{' '}
+							</g>
+						</svg>
+					</button>
+				</div>
 				<nav>
-					<ul>
+					<ul className="flex flex-col gap-2">
 						{projects.map((project) => {
 							return (
-								<li key={project}>
-									<Link to={`/${project.replace(/\s/g, '-')}`}>{project}</Link>
+								<li key={project} className="flex">
+									<Link
+										className="flex-1 border-b border-black px-4 text-lg"
+										to={`/${project.replace(/\s/g, '-')}`}
+									>
+										{project}
+									</Link>
 								</li>
 							);
 						})}
 					</ul>
 				</nav>
-				<button onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).showModal()}>Add New Project</button>
+				<button
+					className="fixed bottom-0 w-full bg-slate-100 py-2 hover:bg-slate-200"
+					onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).showModal()}
+				>
+					Add New Project
+				</button>
 			</dialog>
 
 			<dialog ref={newProjectModalRef}>
@@ -109,7 +204,11 @@ const Header = ({ title, projects, setProjects, theme, themeSwitcher }: HeaderPr
 					<input type="text" id="newProjectInput" name="newProjectInput" />
 				</label>
 				<div className="grid grid-cols-2">
-					<button onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).close()}>Cancel</button>
+					<button
+						onClick={() => (newProjectModalRef.current as unknown as HTMLDialogElement).close()}
+					>
+						Cancel
+					</button>
 					<button onClick={addNewProjectClickHandler}>Submit</button>
 				</div>
 			</dialog>
